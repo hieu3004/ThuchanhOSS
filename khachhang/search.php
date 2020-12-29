@@ -15,7 +15,7 @@
     
     $sql="SELECT * FROM sanpham  join khonggian on sanpham.makhonggian=khonggian.makhonggian
      where sanpham.masanpham like '%$noidung%' or sanpham.tensanpham like'%$noidung%' or sanpham.gia like'%$noidung%'
-     or sanpham.makhonggian like'%$noidung%'  or khonggian.tenkhonggian like'%$noidung%' ";
+     or sanpham.maloai like'%$noidung%'  or khonggian.tenkhonggian like'%$noidung%' ";
     $stm=$obj->prepare($sql);
     $stm->execute();
     $data = $stm->fetchALL(PDO::FETCH_ASSOC);
