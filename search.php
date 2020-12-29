@@ -6,9 +6,9 @@
         echo "vui long nhap noi dung";exit;
         
     }
-    $sql="SELECT * FROM sanpham join khonggian on sanpham.makhonggian=khonggian.makhonggian
+    $sql="SELECT * FROM sanpham join loai on sanpham.maloai=loai.maloai
      where sanpham.soluong > 0 and sanpham.trangthai='1' and  sanpham.tensanpham like'%$noidung%' or sanpham.gia like'%$noidung%'
-     or sanpham.maloai like'%$noidung%'  or khonggian.tenkhonggian like'%$noidung%' ";
+     or loai.tenloai like'%$noidung%' ";
     $stm=$obj->query($sql);
     
     $data = $stm->fetchALL(PDO::FETCH_ASSOC);
