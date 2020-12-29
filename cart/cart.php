@@ -16,8 +16,12 @@
 </head>
 <body>
     <?php
-        include '../config/config.php';
         if(!isset($_SESSION)) session_start();
+        if(!isset($_SESSION['khachhang']))
+        {
+            header('location:login.php');
+            exit;
+        }
     ?>
     
     <!-- menu -->
@@ -32,10 +36,10 @@
 				     
                 <ul class="nav navbar-nav pull-right" style="margin-left: 100px;">
                     <li><a href="../products.php">Products</a></li>
-                    <li><a href="#">Service</a></li>
-                    <li><a href="#">About</a></li>
+                    <li><a href="services.html">Service</a></li>
+                    <li><a href="about.html">About</a></li>
                     <li><a href="cart.php"><img src="../assets/images/buy.png" alt="">MY CART </a></li>
-                    <li><a href="../khachhang/login.php">Account </a></li>
+                    <li><a href="../thongtin.php"> <img src="../assets/images/<?php echo $_SESSION['khachhang']['hinh']?>" style="width:50px; height:50px;" alt=""> <?php echo $_SESSION['khachhang']['tenkhachhang']?> </a></li>
                 </ul>              
             </div>
             <div>
@@ -61,9 +65,9 @@
     </div>
     <hr>
     <!-- noi dung -->
-    <section class="news-box top-margin"style="width:1200px; margin-left:200px; float:center;" >
-        <div class="table-responsive" style="background-color: whitesmoke ;float:center;">
-            <form action="dathang.php" method="post"   >
+    <section class="news-box top-margin"style="background-color: whitesmoke ;  float:center;" >
+        <div class="table-responsive" style="margin-left:250px;">
+            <form action="dathang.php" method="post" style=" width:1200px;float:center;text-align:center;" class="table-responsive" >
             
                 <table class="table table-bordered" id=""  width="100%" cellspacing="0" >
                     <thead>
@@ -77,7 +81,8 @@
                         <th>Thao tác</th>
                     </thead>
                     <?php 
-                        
+                        include '../config/config.php';
+                        if(!isset($_SESSION)) session_start();
                         $tam=isset($_SESSION['cart'])?$_SESSION['cart']:[];
                         $arr=array();
                         $i=0;//biến stt
@@ -92,20 +97,20 @@
                             $i++;
                             
                     ?>
-                    <tbody style="text-align:center;">
+                    <tbody>
                         <td><?php echo $i?></td>
                         <td><?php echo $k //mã sản phẩm ?></td>
                         <td><?php echo $data['tensanpham'] //ten san pham?></td>
                         <td style="color:blue;"> <?php echo number_format( $data['gia']) //gia?><h7 style="color:red;"> VND</h7></td>
                         <td>
-                                <div><a href="#"><img src="../assets/images/tang.jpg" style="width:30px;height:30px;" alt=""></a></div>
+                                <div><a href="qlyCart.php?action=them&masanpham=<?php echo $data['masanpham']?>"><img src="../assets/images/tang.jpg" style="width:30px;height:30px;" alt=""></a></div>
                                 <div style="color:blue;"><?php echo $v?></div><!-- so luong -->
-                                <div><a href="#"><img src="../assets/images/giam.jpg" style="width:30px;height:30px;" alt=""></a></div>
+                                <div><a href="qlyCart.php?action=giam&masanpham=<?php echo $data['masanpham']?>"><img src="../assets/images/giam.jpg" style="width:30px;height:30px;" alt=""></a></div>
                             
                         </td>
                         <td><img src="../assets/images/<?php echo $data['hinh']?>" style="width:200px; height:100px;" alt=""></td>
                         <td style="color:blue;"><?php echo number_format($v*$data['gia'])?>  <h7 style="color:red;">VND</h7></td> <!--thanh tien -->
-                        <td><a href="#">XOA</a></td>
+                        <td><a href="qlyCart.php?action=xoa&masanpham=<?php echo $data['masanpham']?>">XOA</a></td>
                         </tbody>
                     <?php 
                         
@@ -147,7 +152,56 @@
         </div>
     </section><!-- /.container -->
     <hr>
-
+	<!-- don hang khach da dat -->
+    <section class="container"  class="news-box top-margin"style="background-color: whitesmoke ;  float:center;" >
+        <h1 style="color:green; tesxt-align:center;">Đơn hàng của bạn</h1>
+        <table border="1" style="width:100%;">
+            <tr style="background-color:brown; text-align:center; color:white;">
+                <td>STT</td>
+                <td>Mã đơn hàng</td>
+                <td>Mã khách hàng</td>
+                <td>Tên Khách hàng</td>
+                <td>Trạng Thái</td>
+                <td>Thời gian</td>
+                <td>Mã quản trị</td>
+                <td>Thao tác</td>
+            </tr>
+            <?php
+                include '../config/config.php';
+                $makh= $_SESSION['khachhang']['makhachhang'];
+                $sql="SELECT * FROM donhang join khachhang on donhang.makhachhang=khachhang.makhachhang where donhang.makhachhang='{$makh}' and donhang.thanhtien >'{0}' ";
+                $stm=$obj->query($sql);
+                $da= $stm->fetchALL();
+                $j=0;
+                foreach($da as $k => $v )
+                {
+                    $j++;
+            ?>
+            <tr style="text-align:center;">
+                <td><?php echo $j?></td>
+                <td><?php echo $v['madonhang']?></td>
+                <td><?php echo $v['makhachhang']?></td>
+                <td><?php echo $v['tenkhachhang']?></td>
+                <td style="color:blue;"><?php echo $v['trangthai']?></td>
+                <td><?php echo $v['ngaytao']?></td>
+                <td><?php echo $v['maquantri']?></td>
+                <td>
+                    <?php
+                        if($v['trangthai']=='chờ xác nhận')
+                        {
+                        ?>
+                        <a class="btn btn-mini" href="qlyCart.php?action=huy&madonhang=<?php echo $v['madonhang'] ?>">Hủy</a>
+                        <?php
+                        }
+                    ?>
+                </td>
+            </tr>
+            <?php
+                }
+            ?>
+        </table>      
+    </section>
+    <!-- /don hang  -->
         
                        
     <footer id="footer" >
