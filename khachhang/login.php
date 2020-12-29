@@ -54,7 +54,7 @@
 	<div class="container" style="background-color: whitesmoke; height:600px">
 				<div class="row">
 					<div class="col-md-6">
-						<form action="log.php" method="post" enctype="multipart/form-data" class="form-light mt-20" role="form">
+						<form action="" method="post" enctype="multipart/form-data" class="form-light mt-20" role="form">
 							<div class="row">
 								
 							</div>
