@@ -100,7 +100,7 @@
                                 <div style="text-align:center;float:left; width:170px;" ><a href=""><h3><?php echo $v['tensanpham'] ?></h3></a></div>
                                 <div style="text-align:center;float:right; color:blue ; width:170px;"><h3><?php echo number_format($v['gia']) ?>   VND </h3></div>
                             </div>
-                            <div style="float:left;"> <a class="btn btn-mini" href="#">BUY NOW</a></div>
+                            <div style="float:left;"> <a class="btn btn-mini" href="cart/qlyCart.php?action=them&masanpham=<?php echo $v['masanpham']?>">BUY NOW</a></div>
                         </div>
                     </div>
                 </div>
