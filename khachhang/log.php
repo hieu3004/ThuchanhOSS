@@ -12,33 +12,17 @@
 	else
 	{
 		
-		$sql="SELECT * From khachhang where Usernames=?";
+		$sql="SELECT * From khachhang where Usernames=? and Passwords=?";
 		$stm=$obj->prepare($sql);
-		$stm->execute([$user]);
+		$stm->execute([$user,$pass]);
 		$n= $stm->rowCount();
 		if($n==0)
 		{
-			echo "<script language='Javascript'>";
-			echo "alert('Username khong dung')";
-			echo "</script>";
-		}
-		
-		$data= $stm->fetchALL();
-		foreach($data  as $k => $v )
-		{
-			if($pass!=$v["Passwords"])
-			{
-				echo "<script language='Javascript'>";
-				echo "alert('pass khong dung')";
-				echo "</script>";
-			}
-			else{
-				$_SESSION['khachhang']=$v;
-				print_r($_SESSION['khachhang']);
-
-				header('location:index.php');
-			}
-		}
-		
+			
+			header('location:login.php');exit;
+		} 
+		$_SESSION['khachhang']=$stm->fetch();
+		header('location:index.php');
+		//print_r($_SESSION['khachhang']);
 	}
 ?>
