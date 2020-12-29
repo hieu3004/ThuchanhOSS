@@ -15,14 +15,6 @@
     <link rel='stylesheet' id='camera-css'  href='../assets/css/camera.css' type='text/css' media='all'> 
 </head>
 <body>
-    <?php
-        if(!isset($_SESSION)) session_start();
-        if(!isset($_SESSION['khachhang']))
-        {
-            header('location:login.php');
-            exit;
-        }
-    ?>
     
     <!-- menu -->
     <div class="navbar navbar-inverse " >
