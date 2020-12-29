@@ -124,9 +124,35 @@
                                                 <th>Thao tác</th>
                                             </tr>
                                         </thead>
-                                        
-                                        <tbody>
+                                        <?php
+                                            $sql="SELECT * from quantri where quantri.quyen='1' or quantri.quyen='2'";
+                                            $stm=$obj->query($sql);
+                                            $data=$stm->fetchALL();
                                             
+
+                                        ?>
+                                        <tbody>
+                                            <?php
+                                            foreach($data as $k => $v)
+                                            {
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $v['maquantri']?></td>
+                                                <td><?php echo $v['Username']?></td>
+                                                <td><?php echo $v['Passwords']?></td>
+                                                <td><?php echo $v['tenquantri']?></td>
+                                                <td><?php echo $v['hinh']?></td>
+                                                <td><?php
+                                                    if($v['quyen']=='1') echo "Quản lý kinh doanh";
+                                                    if($v['quyen']=='2') echo "Quản lý Marketting";
+                                                    ?>
+                                                
+                                                </td>
+                                                <td> <a class="btn btn-primary" href="chucnang.php?action=thuhoi&maquantri=<?php echo $v['maquantri']?>">Thu hồi</a></td>
+                                            </tr>
+                                            <?php
+                                            }
+                                            ?>
                                         </tbody>
                                     </table>
                                 </div>
